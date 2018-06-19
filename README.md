@@ -26,7 +26,9 @@ SkyWayは、WebRTCを誰にとっても使いやすくすることをミッシ�
 
 外部のプログラムから自由に操作できる、むき出しのWebRTC Engineがあればもっと自由度が高く開発できるのに…
 
-![WebブラウザのWebRTC Engineを直接コントロール可能にした](https://raw.githubusercontent.com/skyway/skyway-webrtc-gateway/master/images/to_be.png)
+<div align="center">
+<img src="https://raw.githubusercontent.com/skyway/skyway-webrtc-gateway/master/images/to_be.png" width=50%>
+</div>
 
 このようなニーズを埋めるためには、[libWebRTC](https://github.com/aisouard/libwebrtc)のようなWebRTCライブラリを利用して自分で一から開発するか、[OpenWebRTC](https://www.openwebrtc.org)や[Janus](https://janus.conf.meetecho.com)のようなWebRTC対応のアプリケーションを利用するかしか方法がありませんでした。
 しかし、ライブラリの内容を理解してアプリケーションを開発するのは大変です。既存のアプリケーションもブラウザとは使い勝手が異なったり、シグナリングサーバやTURNサーバを自分で準備する必要があったり、開発者から運用サポートが得られないという問題があったりと、サービス導入までには様々な課題が有りました。

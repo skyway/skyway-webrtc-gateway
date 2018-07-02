@@ -107,6 +107,8 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 [sequence](https://github.com/skyway/skyway-webrtc-gateway/tree/master/sequence)
 
+[FAQ](https://github.com/skyway/skyway-webrtc-gateway/blob/master/FAQ.md)
+
 ## 利用したい
 
 一般公開準備中ですが、先行利用は受付中です。[お問合わせはこちらまで](https://support.skyway.io/hc/ja/requests/new)

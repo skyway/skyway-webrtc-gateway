@@ -1,0 +1,1607 @@
+swagger: '2.0'
+info:
+  description: 'SkyWay Engine for Linuxを操作するためのREST API仕様書'
+  version: 0.0.1
+  title: SkyWay Engine for Linux REST API
+  termsOfService: 'http://nttcom.github.io/skyway/'
+  contact:
+    email: skyway@skyway.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: "127.0.0.1:8000"
+basePath: /
+tags:
+  - name: 1.peers
+    description: SkyWayサーバと接続しセッション管理を行うためのPeerオブジェクトを管理します
+  - name: 2.data
+    description: DataChannelを利用するためのDataConnectionオブジェクトと転送するデータの送受信方法について指定します
+  - name: 3.media
+    description: MediaStreamを利用するためのMediaConnectionオブジェクトと転送するメディアの送受信方法について指定します
+
+schemes:
+  - http
+
+paths:
+#========================start peer section============================
+
+  /peers:
+    post:
+      tags:
+        - 1.peers
+      summary: Peerオブジェクトを生成し、SkyWayサーバと接続します
+      description: Peerオブジェクトを生成し、SkyWayサーバと接続します。SkyWayサーバと正常に接続できた場合のみ201を返します。
+      operationId: peer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: SkyWayサーバへアクセスするための情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PeerOptions'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/PeerResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_CLEATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: key
+                        message:
+                          type: string
+                          example: "key field is not specified"
+        '403':
+          description: Forbidden(key, domainが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /peers/{peer_id}:
+    delete:
+      tags:
+        - 1.peers
+      summary: Peerオブジェクトの開放処理を行います
+      description: Peerオブジェクトを開放し、関連する全てのWebRTCセッションとデータ受け渡しのためのUDPポートをクローズします
+      operationId: peer_destroy
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: peer_id
+          type: string
+          in: path
+          description: 他のピアがこのピアへ接続するときに使われるIDです。Peerオブジェクトの特定にも利用します
+          required: true
+        - name: token
+          type: string
+          in: query
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(key, domainが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /peers/{peer_id}/events:
+    get:
+      tags:
+        - 1.peers
+      summary: Peerオブジェクトからイベントを取得するのに利用します
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      operationId: peer_event
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "peer_id"
+          in: "path"
+          description: "接続対象のPeerのidを指定します"
+          required: true
+          type: "string"
+          format: "string"
+        - name: token
+          type: string
+          in: query
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PeerEventMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_EVENTS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /peers/{peer_id}/status:
+    get:
+      tags:
+        - 1.peers
+      summary: Peerオブジェクトの状態を取得します
+      description: Peerオブジェクトの状態を取得します
+      operationId: peer_status
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "peer_id"
+          in: "path"
+          description: "接続対象のPeerのidを指定します"
+          required: true
+          type: "string"
+          format: "string"
+        - name: token
+          type: string
+          in: query
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PeerStatusMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_STATUS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+
+#========================start Data section============================
+
+  /data:
+    post:
+      tags:
+        - 2.data
+      summary: Dataの待受ポート開放要求を送ります
+      description: DataConnectionで転送するデータを受け渡すためのUDPポート開放要求を送信します
+      operationId: data
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DataSockParameters'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CREATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /data/{data_id}:
+    delete:
+      tags:
+        - 2.data
+      summary: Dataの待受ポートの閉鎖要求を送ります
+      description: DataConnectionで転送するデータを受け渡すためのUDPポートの閉鎖要求を送信します。activeなDataConnectionで利用されている場合はエラーが発生します
+      operationId: data_delete
+      produces:
+        - application/json
+      parameters:
+        - name: data_id
+          type: string
+          in: path
+          description: Dataを特定するためのIDを指定します
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /data/connections:
+    post:
+      tags:
+        - 2.data
+      summary: リモートのPeerへのDataConnectionConnection確立を開始します
+      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      operationId: data_connections_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        description: 転送するDataについての情報を指定します
+        required: true
+        schema:
+          $ref: '#/definitions/PeerConnectOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/PeerConnectResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_CREATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /data/connections/{data_connection_id}:
+    delete:
+      tags:
+        - 2.data
+      summary: DataConnectionを解放します
+      description: DataConnectionを解放して、関連する全ての接続を切断します。他のDataConnectionで利用していないDataの待受ポートがあればそれらもクローズします
+      operationId: data_connection_close
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "data_connection_id"
+          in: "path"
+          description: DataConnectionを特定するためのidを指定します
+          required: true
+          type: "string"
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+    put:
+      tags:
+        - 2.data
+      summary: DataConnectionの動作を変更します
+      description: DataConnectionで相手側から受信したデータの転送先指定と、DataConnectionに与えるデータの指定/変更を行います。
+      operationId: data_connection_put
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "data_connection_id"
+          in: "path"
+          description: DataConnectionを特定するためのidを指定します
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: 受信したDataの転送先と、相手側へ送信するDataのIDを指定します
+          required: true
+          schema:
+            $ref: '#/definitions/DataConnectionPutOptions'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_PUT"
+              data_id:
+                type: string
+                example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /data/connections/{data_connection_id}/events:
+    get:
+      tags:
+        - 2.data
+      summary: DataConnectionオブジェクトからイベントを取得するのに利用します
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      operationId: data_connection_events
+      produces:
+        - application/json
+      parameters:
+        - name: "data_connection_id"
+          in: "path"
+          description: "DataConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DataConnectionEventMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_EVENTS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /data/connections/{data_connection_id}/status:
+    get:
+      tags:
+        - 2.data
+      summary: DataConnectionの状態を取得します
+      description: DataConnectionの状態を取得します
+      operationId: data_connection_status
+      produces:
+        - application/json
+      parameters:
+        - name: "data_connection_id"
+          in: "path"
+          description: "DataConnectionを特定するためのIDを指定します"
+          required: true
+          type: "string"
+          format: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DataConnectionStatusMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_STATUS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+#========================start Stream section============================
+
+
+  /media:
+    post:
+      tags:
+        - 3.media
+      summary: Mediaの待受ポート開放要求を送ります
+      description: MediaConnectionで転送するMediaを受け渡すためのUDPポート開放要求を送信します
+      operationId: media
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Mediaの種類を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/MediaOptions'
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MediaParameters'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CREATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: is_video
+                        message:
+                          type: string
+                          example: "is_video field is not specified"
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/{media_id}:
+    delete:
+      tags:
+        - 3.media
+      summary: Mediaの解放
+      description: MediaConnectionで転送するMediaを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します。
+      operationId: streams_delete
+      produces:
+        - application/json
+      parameters:
+        - name: media_id
+          type: string
+          in: path
+          description: Mediaを特定するためのIDを指定します
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_id
+                        message:
+                          type: string
+                          example: "media_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections:
+    post:
+      tags:
+        - 3.media
+      summary: リモートのPeerへのMediaConnection確立を開始します
+      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      operationId: media_connection_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        description: 転送するMediaについての情報を指定します
+        required: true
+        schema:
+          $ref: '#/definitions/PeerCallOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/PeerCallResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_CREATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections/{media_connection_id}:
+    delete:
+      tags:
+        - 3.media
+      summary: MediaConnectionを解放します
+      description: MediaConnectionを解放します。このMediaConnection以外で利用されていないMediaがあれば同時にクローズします
+      operationId: media_connection_close
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_connection_id
+                        message:
+                          type: string
+                          example: "media_connection_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections/{media_connection_id}/answer:
+    post:
+      tags:
+        - 3.media
+      summary: callに応答します
+      description: callにどのように応答するかMediaConstraintsを提供します
+      operationId: media_connection_answer
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: 相手側のPeerへ送信するMediaの情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/MediaConnectionAnswerOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/MediaConnectionAnswerResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_ANSWER"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_id
+                        message:
+                          type: string
+                          example: "media_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections/{media_connection_id}/events:
+    get:
+      tags:
+        - 3.media
+      summary: MediaConnectionオブジェクトからイベントを取得するのに利用します
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      operationId: media_connection_event
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MediaConnectionEventMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_EVENTS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+
+  /media/connections/{media_connection_id}/status:
+    get:
+      tags:
+        - 3.media
+      summary: MediaConnectionの状態を取得します
+      description: MediaConnectionの状態を取得します
+      operationId: media_connection_status
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのIDを指定します"
+          required: true
+          type: "string"
+          format: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MediaConnectionStatusMessage'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_STATUS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+
+#========================start definition section============================
+
+definitions:
+#========================start peer section============================
+
+  PeerOptions:
+    type: object
+    required: [ "key", "domain" ]
+    properties:
+      key:
+        description: クラウド上のPeerServerを利用するためのAPIキーです。
+        type: string
+        format: string
+        example: "KEY_FOO"
+      domain:
+        description: SkyWayでの開発者登録時に指定したWebサーバのドメイン文字列を指定します。
+        type: string
+        format: string
+        example: "example.com"
+      peer_id:
+        description: 他のピアがこのピアへ接続するときに使われるIDです。もしIDが指定されない場合、ブローカサーバがIDを生成します。
+        type: string
+        format: string
+        example: "ID_FOO"
+      turn:
+        type: boolean
+        example: true
+        description: SkyWayのTURNサーバを利用する場合はtrueにします。デフォルトはtrueです。
+
+  PeerResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "PEERS_CREATE"
+      params:
+        type: object
+        required: [ "peer_id", "token" ]
+        properties:
+          peer_id:
+            type: string
+            example: "ID_FOO"
+            description: 他のピアがこのピアへ接続するときに使われるIDです。Peerオブジェクトの特定にも利用します
+          token:
+            type: string
+            example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
+            description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+
+#POST /peers/ID/media_connections
+  PeerCallOptions:
+    type: object
+    required: [ "peer_id", "token", "target_id", "constraints" ]
+    properties:
+      peer_id:
+        description: "自身のPeerのidを指定します"
+        type: "string"
+        format: "string"
+      token:
+        type: string
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+      target_id:
+        type: string
+        example: ID_BAR
+        description: 接続対象のpeer_idを指定します
+      constraints:
+        $ref: '#/definitions/PeerCallConstraints'
+      redirect_params:
+        $ref: '#/definitions/MediaRedirectOptions'
+
+  PeerCallConstraints:
+    type: object
+    required: [ "video", "audio" ]
+    properties:
+      video:
+        description: Videoを転送するかどうか指定します
+        type: boolean
+        example: true
+      videoReceiveEnabled:
+        type: boolean
+      audio:
+        description: Audioを転送するかどうか指定します
+        type: boolean
+        example: true
+      audioReceiveEnabled:
+        type: boolean
+      video_params:
+        $ref: '#/definitions/PeerVideoParameters'
+      audio_params:
+        $ref: '#/definitions/PeerAudioParameters'
+
+  PeerCallResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "PEERS_CALL"
+      params:
+        type: object
+        properties:
+          media_connection_id:
+            type: string
+            example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+            description: MediaConnectionを特定するためのIDです
+
+#POST /peers/ID/data_connections
+
+  PeerConnectOptions:
+    type: object
+    required: [ "peer_id", "token", "target_id", "params" ]
+    properties:
+      peer_id:
+        description: "接続元のPeerのidを指定します"
+        type: "string"
+        format: "string"
+      token:
+        type: string
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+      options:
+        type: object
+        properties:
+          metadata:
+            type: "string"
+            format: "string"
+            description:
+              接続相手に渡される任意の文字列です
+          serialization:
+            type: string
+            format: "string"
+            description: 送信時のシリアライズ方法を指定します。'BINARY', 'JSON', 'NONE'のいずれかが選択可能です
+          dcInit:
+            $ref: '#/definitions/DcInit'
+      target_id:
+        type: string
+        example: ID_BAR
+        description: 接続対象のpeer_idを指定します
+      params:
+        type: object
+        properties:
+          data_id:
+            type: string
+            example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+      redirect_params:
+        $ref: '#/definitions/DataConnectionRedirectOptions'
+
+  DcInit:
+    type: object
+    properties:
+      ordered:
+        type: "boolean"
+      maxPacketLifeTime:
+        type: "integer"
+      maxRetransmits:
+        type: "integer"
+      protocol:
+        type: "string"
+      negotiated:
+        type: "boolean"
+      id:
+        type: "integer"
+      priority:
+        type: "string"
+
+  PeerConnectResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "PEERS_CONNECT"
+      params:
+        type: object
+        required: [ "data_connection_id", "data_port" ]
+        properties:
+          data_connection_id:
+            type: string
+            example: "dc-4995f372-fb6a-4196-b30a-ce11e5c7f56c"
+            description: DataConnectionを特定するためのIDです
+
+
+#GET /peers/ID/events
+  PeerEventMessage:
+    type: object
+    required: [ "event" ]
+    properties:
+      event:
+        description: イベントの種別を示します
+        type: string
+        enum:
+        - "OPEN"
+        - "CONNECTION"
+        - "CALL"
+        - "STREAM"
+        - "CLOSE"
+        - "ERROR"
+        example: "TYPE_OF_EVENT"
+      peer_params:
+        $ref: '#/definitions/PeerParametsers'
+      call_params:
+        $ref: '#/definitions/CallParametsers'
+      data_params:
+        $ref: '#/definitions/DataParametsers'
+      error_message:
+        description: エラーの内容を示します
+        type: string
+        enum:
+        - "BROWSER_INCOMPATIBLE"
+        - "INVALID_ID"
+        - "INVALID_KEY"
+        - "UNAVAILABLE_ID"
+        - "SSL_UNAVAILABLE"
+        - "SERVER_DISCONNECTED"
+        - "SERVER_ERROR"
+        - "SOCKET_ERROR"
+        - "SOCKET_CLOSED"
+
+  PeerParametsers:
+    type: object
+    description: openイベントのときのみ含まれます
+    required: [ "peer_id" ]
+    properties:
+      peer_id:
+        description: Peerを特定するためのIDです
+        type: string
+        example: "hoge"
+      token:
+        description: Peerを利用するために必要なtokenです。
+        type: string
+        example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
+
+  CallParametsers:
+    description: call及びstreamイベントのときのみ含まれます
+    type: object
+    required: [ "media_connection_id" ]
+    properties:
+      media_connection_id:
+        description: 相手側からのCallに応答するのに必要なIDです
+        type: string
+        example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+
+  DataParametsers:
+    description: OnDataConnectionイベントのときのみ含まれます
+    type: object
+    required: [ "data_connection_id" ]
+    properties:
+      data_connection_id:
+        description: 相手側からのConnectに応答するのに必要なIDです
+        type: string
+        example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
+
+
+#GET /peers/ID/status
+  PeerStatusMessage:
+    type: object
+    required: [ "peer_id", "disconnected" ]
+    properties:
+      peer_id:
+        description: Peerオブジェクトを特定するためのIDです
+        type: string
+        example: "ID_FOO"
+      disconnected:
+        type: boolean
+        example: false
+
+  PeerVideoParameters:
+    type: object
+    required: [ 'band_width', 'codec', 'media_id' ]
+    properties:
+      band_width:
+        type: integer
+      codec:
+        type: string
+        example: "H264"
+      media_id:
+        description: Mediaを特定するためのIDです
+        type: string
+        example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+      payload_type:
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        type: integer
+        example: 100
+      sampling_rate:
+        type: integer
+        example: 90000
+
+
+  PeerAudioParameters:
+    type: object
+    required: [ 'band_width', 'codec', 'media_id' ]
+    properties:
+      band_width:
+        type: integer
+      codec:
+        type: string
+        example: "OPUS"
+      media_id:
+        description: Mediaを特定するためのIDです
+        type: string
+        example: "au-8f8e8955-460e-4f3a-9440-1c851af328b5"
+      payload_type:
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        type: integer
+        example: 111
+      sampling_rate:
+        type: integer
+        example: 48000
+
+#========================start DataConnection section============================
+
+#GET /data_connections/ID/events
+  DataConnectionEventMessage:
+    type: object
+    required: [ "event" ]
+    properties:
+      event:
+        description: イベントの種別を示します
+        type: string
+        enum:
+        - "OPEN"
+        - "CLOSE"
+        - "ERROR"
+        example: "TYPE_OF_EVENT"
+      error_message:
+        description: エラーの内容を示します
+        type: string
+
+#GET /data_connection/ID/status
+  DataConnectionStatusMessage:
+    type: object
+    required: [ "buffersize", "label", "metadata", "open", "reliable", "serialization", "type" ]
+    properties:
+      remote_id:
+        description: コネクションの相手側のpeer_idです
+        type: string
+        example: "ID_BAR"
+      buffersize:
+        description: ブラウザのバッファが一杯になった場合に、キューされるメッセージのサイズです。
+        type: integer
+      label:
+        description: コネクションが開始されたときにPeerJSからアサインされる、または指定されるオプションのラベルです。
+        type: string
+      metadata:
+        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです。
+        type: object
+      open:
+        description: コネクションがopenであり、読み込み/書き込みの準備ができている場合にtrueになります。
+        type: boolean
+      reliable:
+        description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます。
+        type: boolean
+      serialization:
+        description: コネクションを通じて送信されるデータのserializeフォーマットです。BINARY (デフォルト値)、 BINARY_UTF8、 JSON、 または NONE となります。
+        type: string
+        example: "BINARY_UTF8"
+      type:
+        description: 常に'DATA'が設定されます
+        type: string
+        example: "DATA"
+
+
+
+
+#========================start MediaConnection section============================
+
+
+
+#GET /media_connections/ID/events
+  MediaConnectionEventMessage:
+    type: object
+    required: [ "event" ]
+    properties:
+      event:
+        description: イベントの種別を示します
+        type: string
+        enum:
+        - "STREAM"
+        - "CLOSE"
+        - "ERROR"
+        example: "TYPE_OF_EVENT"
+      stream_options:
+        description: streamの内容を示します。streamイベントの場合のみ
+        type: object
+        required: [ "is_video", "media_connection_id", "stream_id" ]
+        properties:
+          is_video:
+            type: boolean
+            description: videoの場合にtrue, audioの場合false
+          stream_params:
+            $ref: '#/definitions/MediaParameters'
+      close_options:
+        type: object
+      error_message:
+        description: エラーの内容を示します
+        type: string
+
+ #PUT /media_connections/ID/redirect/ID
+  MediaRedirectOptions:
+    type: object
+    properties:
+      video:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+      audio:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+
+#GET /media_connections/ID/status
+  MediaConnectionStatusMessage:
+    type: object
+    required: [ "open", "metadata", "remote_id" ]
+    properties:
+      open:
+        description: MediaConnectionがアクティブなときtrueになります
+        type: boolean
+        example: true
+      metadata:
+        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです。
+        type: object
+      remote_id:
+        type: string
+        description: 接続相手のPeerのpeer_idです
+
+#========================start Data section============================
+
+
+  DataSockParameters:
+    type: object
+    required: [ 'data_id', "port" ]
+    properties:
+      data_id:
+        description: Dataを特定するためのIDです
+        type: string
+        example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+      port:
+        description: Dataを待ち受けるポート番号です
+        type: integer
+        format: uint16
+        example: 10001
+      ip_v4:
+        description: Dataを待ち受けるIPv4アドレスです
+        type: string
+      ip_v6:
+        description: Dataを待ち受けるIPv6アドレスです
+        type: string
+
+  DataConnectionPutOptions:
+    type: object
+    properties:
+      feed_params:
+        $ref: '#/definitions/DataConnectionFeedOptions'
+      redirect_params:
+        $ref: '#/definitions/DataConnectionRedirectOptions'
+
+  DataConnectionFeedOptions:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          data_id:
+            description: Dataを特定するためのIDです
+            type: string
+            example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+
+ #PUT /data/connections/ID/redirect/ID
+  DataConnectionRedirectOptions:
+    type: object
+    required: [ "port" ]
+    properties:
+      data_id:
+        description: Dataを特定するためのIDです
+        type: string
+        example: "da-1cff1b4e-0cad-444a-9e89-3c9285702729"
+      ip_v4:
+        type: string
+        description: Dataの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+      ip_v6:
+        type: string
+        description: Dataの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+      port:
+        type: integer
+        format: uint16
+        example: 10001
+
+#========================start Media section============================
+
+  MediaOptions:
+    type: object
+    required: [ 'is_video' ]
+    properties:
+      is_video:
+        type: boolean
+        example: true
+        description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
+
+  MediaParameters:
+    type: object
+    required: [ 'media_id', "port" ]
+    properties:
+      media_id:
+        description: Mediaを特定するためのIDです
+        type: string
+        example: "vi-4d053831-5dc2-461b-a358-d062d6115216"
+      port:
+        description: Mediaを待ち受けるポート番号です
+        type: integer
+        format: uint16
+        example: 10001
+      ip_v4:
+        description: Mediaを待ち受けるIPv4アドレスです
+        type: string
+      ip_v6:
+        description: Mediaを待ち受けるIPv6アドレスです
+        type: string
+
+  MediaConnectionAnswerOptions:
+    type: object
+    required: [ "constraints" ]
+    properties:
+      constraints:
+        $ref: '#/definitions/PeerCallConstraints'
+
+  MediaConnectionAnswerResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "MEDIA_CONNECTION_ANSWER"
+      params:
+        type: object
+        properties:
+          video_port:
+            description: Videoを受け取るNative Clientのポート番号を指定します
+            type: integer
+            format: uint16
+            example: 10011
+          video_id:
+            description: Videoを特定するためのIDです
+            type: string
+            example: "vi-a32e5933-828b-44e4-849d-0826ced78807"
+          audio_port:
+            description: Audioを受け取るNative Clientのポート番号を指定します
+            type: integer
+            format: uint16
+            example: 10021
+          audio_id:
+            description: Audioを特定するためのIDです
+            type: string
+            example: "au-e673037c-6ce8-48cb-9834-ba4ed5026a83"

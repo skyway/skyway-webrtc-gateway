@@ -1524,10 +1524,6 @@ definitions:
     type: object
     required: [ "port" ]
     properties:
-      data_id:
-        description: Dataを特定するためのIDです
-        type: string
-        example: "da-1cff1b4e-0cad-444a-9e89-3c9285702729"
       ip_v4:
         type: string
         description: Dataの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます

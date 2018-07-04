@@ -101,7 +101,7 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 ## How to Use
 
-[API Reference](http://webrtcgw.us1.eclpaas.com/docs/#/1.peers)
+[API Reference](http://35.200.46.204)
 
 [samples](https://github.com/skyway/skyway-webrtc-gateway/tree/master/samples)
 

@@ -94,11 +94,6 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 他にも面白い使い方を思いついたら教えて下さい！
 
-## 動作環境
-
-- Linux(Ubuntu18.04, 16.04, etc.)
-- Windows 10, 8, 7
-
 ## How to Use
 
 [API Reference](http://35.200.46.204)
@@ -109,6 +104,11 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 [FAQ](https://github.com/skyway/skyway-webrtc-gateway/blob/master/FAQ.md)
 
-## 利用したい
+## Download
 
-一般公開準備中ですが、先行利用は受付中です。[お問合わせはこちらまで](https://support.skyway.io/hc/ja/requests/new)
+### x86
+
+- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.1/gateway_linux)(Ubuntu18.04, 16.04, etc.)
+- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.1/gateway_windows.exe) 10, 8, 7
+
+

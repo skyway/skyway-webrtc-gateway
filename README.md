@@ -118,5 +118,7 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 [利用規約](https://webrtc.ecl.ntt.com/terms.html)
 
 このソフトウェアは、 Apache 2.0ライセンスで配布されている製作物が含まれています。
+
 [LICENSE](https://github.com/skyway/skyway-webrtc-gateway/blob/master/LICENSE.txt)
+
 [NOTICE](https://github.com/skyway/skyway-webrtc-gateway/blob/master/NOTICE.txt)

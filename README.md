@@ -130,6 +130,12 @@ MD5
 
 gateway_linux_arm: a6646dcb00432c87ebf5f01656dec161
 
+
+## Updates and Release Notes
+
+[issues](https://github.com/skyway/skyway-webrtc-gateway/issues)
+[release notes](https://github.com/skyway/skyway-webrtc-gateway/blob/master/release-notes.md)
+
 ## License
 
 [利用規約](https://webrtc.ecl.ntt.com/terms.html)

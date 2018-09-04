@@ -1,6 +1,6 @@
 # skyway-webrtc-gateway
 
-[English version of this document](./README.md)
+[English version of this document](./README-en.md)
 
 SkyWay WebRTC Gatewayは、WebRTCの可能性を広げる実験的な取り組みです。
 ともにイノベーションに挑戦する仲間を募集しています。

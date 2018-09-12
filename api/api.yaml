@@ -1572,6 +1572,8 @@ definitions:
     properties:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
+      redirect_params:
+        $ref: '#/definitions/MediaRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object

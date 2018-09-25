@@ -104,7 +104,10 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 [sequence](https://github.com/skyway/skyway-webrtc-gateway/tree/master/sequence)
 
+## お問い合わせ
+
 [FAQ](https://github.com/skyway/skyway-webrtc-gateway/blob/master/FAQ.md)
+(H.264がMac版Chromeで描画されない件について調査中)
 
 [開発者コミュニティ](https://support.skyway.io/hc/ja/community/topics/360000026987)
 

@@ -273,6 +273,12 @@ paths:
       summary: Dataの待受ポート開放要求を送ります
       description: DataConnectionで転送するデータを受け渡すためのUDPポート開放要求を送信します
       operationId: data
+      parameters:
+        - in: body
+          name: body
+          description: bodyには空のJSON文字列("{}"")が必要です
+          schema:
+            type: object
       consumes:
         - application/json
       produces:

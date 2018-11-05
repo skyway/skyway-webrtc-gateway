@@ -128,6 +128,10 @@ gateway_linux_x64: aeddc1ea62f5494a1d31002b83ba6330
 
 - [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.2/gateway_linux_arm)
 
+想定動作環境: 
+- ハードウェア: Raspberry Pi 3B, 3B+
+- ソフトウェア: Raspbian Version 9以降
+
 MD5
 
 gateway_linux_arm: a6646dcb00432c87ebf5f01656dec161

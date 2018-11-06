@@ -9,6 +9,10 @@
 
 *このイベントは、STUNパケットを受信したタイミングで発火しますので、相手側がRTPパケットを送信していなくても、MediaStream確立に成功した時点で発火します。
 
+### Video/Audioがredirectされない
+
+payload typeの指定が間違っているとredirectされません。これはWebRTCのmediaはmultiprexされて送信されるため、payload typeをチェックすることでmediaを識別してredirectするためです。
+
 ### Mac版のChromeでH.264エンコードのビデオが表示されない
 
 x264encを利用した場合、H.264のChrome側で無視されるようです。OpenH264でエンコードすることにより表示されることを確認しています。

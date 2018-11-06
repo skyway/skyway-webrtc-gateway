@@ -9,6 +9,14 @@
 
 *このイベントは、STUNパケットを受信したタイミングで発火しますので、相手側がRTPパケットを送信していなくても、MediaStream確立に成功した時点で発火します。
 
+### 動作対象端末なのにSegmentation Faultを出力してクラッシュする
+
+時間内にSkyWayサーバに接続できない場合にクラッシュするようです。以下のようなケースが考えられます
+
+- 名前解決が極端に遅い
+- SkyWayサーバへの接続がfirewallで制限されている
+- インターネットに接続されていない
+
 ### Video/Audioがredirectされない
 
 payload typeの指定が間違っているとredirectされません。これはWebRTCのmediaはmultiprexされて送信されるため、payload typeをチェックすることでmediaを識別してredirectするためです。

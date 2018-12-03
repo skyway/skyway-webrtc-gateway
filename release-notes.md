@@ -1,5 +1,10 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.0.4](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.0.4)
+
+- バグの修正
+  - 長時間起動し大量にcallした際にクラッシュする問題を修正
+
 ## [v0.0.3](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.0.3)
 
 - バグの修正

@@ -17,7 +17,7 @@ WebRTC Engine inside the browsers is only controlled by the browser's API. Contr
 Because of this, you might have the problem like:
 
 - You want devices to use WebRTC but the devices is not capable of running browser
-- How can we operate the IoT device outside? 
+- How can we operate the IoT device outside?
 - I want to analyze the video with AI or to send data...
 - I want to use WebRTC on server-side but the headless browsers doesn't meet my requirements...
 - Can we make use of SIP/RTP property we already have?
@@ -37,7 +37,7 @@ In order to meet this needs, previously there's limited ways like developing som
 
 ## Functions
 
-To solve these problems, we have developed the SkyWay WebRTC Gateway which equips WebRTC engine which is wrapped with SkyWay. There are functions below: 
+To solve these problems, we have developed the SkyWay WebRTC Gateway which equips WebRTC engine which is wrapped with SkyWay. There are functions below:
 
 - You can use SkyWay as you do
     - Signaling server, TURN server
@@ -106,18 +106,19 @@ If you found the exciting use cases, let us know!
 
 ### x86_64
 
-- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.3/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
-- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.3/gateway_windows.exe)(Windows 10, 8, 7)
+- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.4/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
+- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.4/gateway_windows.exe)(Windows 10, 8, 7)
 
 MD5
 
-gateway_windows.exe: 05dba3c89ae7f175dfbb2307e1c1719a
+gateway_linux_x64: 863e5819bdf607d123c1e679ad629aa5
 
-gateway_linux_x64: a315ff6c6fa0cfff96720ec7084041d6
+gateway_windows.exe: 4301579956318126639cccd1a57df92b
+
 
 ### ARM
 
-- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.3/gateway_linux_arm)
+- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.0.4/gateway_linux_arm)
 
 Minimum Requirements:
 - Hardware: Raspberry Pi 3B or later
@@ -125,7 +126,7 @@ Minimum Requirements:
 
 MD5
 
-gateway_linux_arm: e25b08a3afbeb3374e64a8c2e47d81b3
+gateway_linux_arm: 4b1ee20a25c8073d44bf519fc8ddac11
 
 ## Updates and Release Notes
 

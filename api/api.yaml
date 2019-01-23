@@ -1517,13 +1517,10 @@ definitions:
   DataConnectionFeedOptions:
     type: object
     properties:
-      params:
-        type: object
-        properties:
-          data_id:
-            description: Dataを特定するためのIDです
-            type: string
-            example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+      data_id:
+        description: Dataを特定するためのIDです
+        type: string
+        example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
 
  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:

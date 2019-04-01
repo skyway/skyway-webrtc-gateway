@@ -23,14 +23,14 @@ User_App -> WebRTC_GW: GET /data/connections/\ndc-856e2de9-f5ed-4549-a1f2-66cc18
 note right: Wait for the DataConnection\n open event
 WebRTC_GW --> User_App: 200 OK\n{\n\tevent: "OPEN"\n}
 
-User_App -> WebRTC_GW: PUT /data/connections\n/c-856e2de9ff-f5ed-4549-a1f2-66cc18df60cf\n{\n\tfeed_params:{\n\t\tdata_id: "da-04193443-5679-4d96-8162-2c4557823bbb"\n\t},\n\tredirect_params: {\n\t\tip_v4: "127.0.0.1",\n\t\tport: 10002\n\t}\n}
+User_App -> WebRTC_GW: PUT /data/connections\n/c-856e2de9ff-f5ed-4549-a1f2-66cc18df60cf\n{\n\tfeed_params:{\n\t\tdata_id: "da-04193443-5679-4d96-8162-2c4557823bbb"\n\t},\n\tredirect_params: {\n\t\tip_v4: "172.16.1.105",\n\t\tport: 10002\n\t}\n}
 WebRTC_GW --> User_App: 200 OK\n{\n\tcommand_type: "DATA_CONNECTION_PUT", \n\tdata_id: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"\n}
 
 loop
 User_App -> WebRTC_GW: send UDP data to 172.16.1.106:50001
 WebRTC_GW -> Target_Peer: redirect data with DataChannel
 Target_Peer -> WebRTC_GW: recv data with DataChannel
-WebRTC_GW -> User_App: redirect data to 127.0.0.1:10002 with UDP
+WebRTC_GW -> User_App: redirect data to 172.16.1.105:10002 with UDP
 end
 
 User_App -> WebRTC_GW: Delete /data/connections\n/dc-f6a62e07-af36-4d08-8857-bbc49a37b4b3

@@ -51,7 +51,7 @@ def create_peer(key, peer_id)
       "peer_id": peer_id,
   }
   res = request(:post, "/peers", JSON.generate(params))
-  json = parse_response(res)
+  json = parse_response(res)  
   json["params"]["token"]
 end
 
@@ -68,7 +68,19 @@ def create_media(is_video)
   [media_id, ip_v4, port]
 end
 
-def create_constraints(video_id, audio_id)
+def create_rtcp()
+  params = {
+  }
+  #open datasocket for sending data
+  res = request(:post, "/media/rtcp", JSON.generate(params))
+  json = parse_response(res)
+  rtcp_id = json["rtcp_id"]
+  ip_v4 = json["ip_v4"]
+  port = json["port"]
+  [rtcp_id, ip_v4, port]
+end
+
+def create_constraints(video_id, audio_id, video_rtcp_id, audio_rtcp_id)
   {
       "video": true,
       "videoReceiveEnabled": true,
@@ -78,28 +90,38 @@ def create_constraints(video_id, audio_id)
           "band_width": 1500,
           "codec": "H264",
           "media_id": video_id,
+          "rtcp_id": video_rtcp_id,
           "payload_type": 100,
       },
       "audio_params": {
           "band_width": 1500,
           "codec": "opus",
           "media_id": audio_id,
+          "rtcp_id": audio_rtcp_id,
           "payload_type": 111,
       }
   }
 end
 
-def call(peer_id, token, target_id, video_id, audio_id, video_redirect, audio_redirect)
-  constraints = create_constraints(video_id, audio_id)
+def call(peer_id, token, target_id, video_id, video_redirect, audio_id, audio_redirect, video_rtcp_id, video_rtcp_redirect, audio_rtcp_id, audio_rtcp_redirect)
+  constraints = create_constraints(video_id, audio_id, video_rtcp_id, audio_rtcp_id)
   redirect_params = {
       "video": {
           "ip_v4": video_redirect[0],
           "port": video_redirect[1],
       },
       "audio": {
-          "ip_v4": audio_redirect[0],
-          "port": audio_redirect[1],
+        "ip_v4": audio_redirect[0],
+        "port": audio_redirect[1],
       },
+      "video_rtcp": {
+        "ip_v4": video_rtcp_redirect[0],
+        "port": video_rtcp_redirect[1],
+      },
+      "audio_rtcp": {
+        "ip_v4": audio_rtcp_redirect[0],
+        "port": audio_rtcp_redirect[1],
+      }
   }
 
   params = {
@@ -125,15 +147,15 @@ def wait_call(peer_id, peer_token)
   media_connection_id
 end
 
-def wait_stream(media_connection_id)
-  thread_event = wait_thread_for("/media/connections/#{media_connection_id}/events", event: "STREAM", ended: lambda { |e|
+def wait_ready(media_connection_id)
+  thread_event = wait_thread_for("/media/connections/#{media_connection_id}/events", event: "READY", ended: lambda { |e|
   })
 
   thread_event.join
 end
 
-def answer(media_connection_id, video_id, audio_id, video_redirect, audio_redirect)
-  constraints = create_constraints(video_id, audio_id)
+def answer(media_connection_id, video_id, video_redirect, audio_id, audio_redirect, video_rtcp_id, video_rtcp_redirect, audio_rtcp_id, audio_rtcp_redirect)
+  constraints = create_constraints(video_id, audio_id, video_rtcp_id, audio_rtcp_id)
   redirect_params = {
       "video": {
           "ip_v4": video_redirect[0],
@@ -143,6 +165,14 @@ def answer(media_connection_id, video_id, audio_id, video_redirect, audio_redire
           "ip_v4": audio_redirect[0],
           "port": audio_redirect[1],
       },
+      "video_rtcp": {
+        "ip_v4": video_rtcp_redirect[0],
+        "port": video_rtcp_redirect[1],
+      },
+      "audio_rtcp": {
+        "ip_v4": audio_rtcp_redirect[0],
+        "port": audio_rtcp_redirect[1],
+      }
   }
 
   params = {

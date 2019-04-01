@@ -1,5 +1,10 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.1.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.1.0)
+
+- 受信したRTCPのユーザへの送信[(#3)](https://github.com/skyway/skyway-webrtc-gateway/issues/3)
+- RTCPの相手側への転送[(#4)](https://github.com/skyway/skyway-webrtc-gateway/issues/4)
+
 ## [v0.0.4](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.0.4)
 
 - バグの修正

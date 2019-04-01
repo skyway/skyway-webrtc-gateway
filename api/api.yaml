@@ -1276,8 +1276,65 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       redirect_params:
-        $ref: '#/definitions/MediaRedirectOptions'
+        $ref: '#/definitions/PeerCallRedirectOptions'
 
+  #PUT /media_connections/ID/redirect/ID
+  PeerCallRedirectOptions:
+    type: object
+    properties:
+      video:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+      video_rtcp:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10003
+      audio:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10002
+      audio_rtcp:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
+            
   PeerCallConstraints:
     type: object
     required: [ "video", "audio" ]
@@ -1486,6 +1543,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+      rtcp_id:
+        description: RTCP転送ポートを特定するためのIDです
+        type: string
+        example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"        
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1508,6 +1569,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "au-8f8e8955-460e-4f3a-9440-1c851af328b5"
+      rtcp_id:
+        description: RTCP転送ポートを特定するためのIDです
+        type: string
+        example: "rc-85969322-99c4-4a65-b2d4-e20d86821f13"        
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1604,36 +1669,62 @@ definitions:
         description: エラーの内容を示します
         type: string
 
- #PUT /media_connections/ID/redirect/ID
-  MediaRedirectOptions:
+  MediaAnswerRedirectOptions:
     type: object
     properties:
       video:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+      video_rtcp:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
       audio:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+      audio_rtcp:
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
+
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -1764,7 +1855,7 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       redirect_params:
-        $ref: '#/definitions/MediaRedirectOptions'
+        $ref: '#/definitions/MediaAnswerRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object

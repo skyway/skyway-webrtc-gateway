@@ -1,5 +1,12 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.2.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.2.0)
+
+- ポート番号・ログレベルの変更のための設定ファイルを定義
+- 内部で利用しているlibWebRTCのバージョンを更新(M72)
+- 長時間起動時の安定性を向上
+- 依存ライブラリを整理
+
 ## [v0.1.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.1.0)
 
 - 受信したRTCPのユーザへの送信[(#3)](https://github.com/skyway/skyway-webrtc-gateway/issues/3)

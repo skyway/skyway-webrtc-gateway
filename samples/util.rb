@@ -183,21 +183,6 @@ def answer(media_connection_id, video_id, video_redirect, audio_id, audio_redire
   json = parse_response(res)
 end
 
-def redirect(media_connection_id, video_redirect, audio_redirect)
-  params = {
-      "video": {
-          "ip_v4": video_redirect[0],
-          "port": video_redirect[1],
-      },
-      "audio": {
-          "ip_v4": audio_redirect[0],
-          "port": audio_redirect[1],
-      },
-  }
-  res = request(:post, "/media/connections/#{media_connection_id}/redirect", JSON.generate(params))
-  json = parse_response(res)
-end
-
 def create_data
   #open datasocket for sending data
   res = request(:post, "/data", '{}')

@@ -23,7 +23,7 @@ schemes:
   - http
 
 paths:
-#========================start peer section============================
+  #========================start peer section============================
 
   /peers:
     post:
@@ -264,7 +264,7 @@ paths:
           description: Request Timeout
 
 
-#========================start Data section============================
+  #========================start Data section============================
 
   /data:
     post:
@@ -382,12 +382,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: body
-        name: body
-        description: 転送するDataについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerConnectOptions'
+        - in: body
+          name: body
+          description: 転送するDataについての情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PeerConnectOptions'
       responses:
         '202':
           description: Accepted
@@ -652,7 +652,7 @@ paths:
         '408':
           description: Request Timeout
 
-#========================start Stream section============================
+  #========================start Stream section============================
 
 
   /media:
@@ -877,12 +877,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: body
-        name: body
-        description: 転送するMediaについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerCallOptions'
+        - in: body
+          name: body
+          description: 転送するMediaについての情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PeerCallOptions'
       responses:
         '202':
           description: Accepted
@@ -1211,7 +1211,7 @@ paths:
 #========================start definition section============================
 
 definitions:
-#========================start peer section============================
+  #========================start peer section============================
 
   PeerOptions:
     type: object
@@ -1257,7 +1257,7 @@ definitions:
             example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
-#POST /peers/ID/media_connections
+  #POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
     required: [ "peer_id", "token", "target_id", "constraints" ]
@@ -1334,7 +1334,7 @@ definitions:
             type: integer
             format: uint16
             example: 10004
-            
+
   PeerCallConstraints:
     type: object
     required: [ "video", "audio" ]
@@ -1371,7 +1371,7 @@ definitions:
             example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
             description: MediaConnectionを特定するためのIDです
 
-#POST /peers/ID/data_connections
+  #POST /peers/ID/data_connections
 
   PeerConnectOptions:
     type: object
@@ -1446,7 +1446,7 @@ definitions:
             description: DataConnectionを特定するためのIDです
 
 
-#GET /peers/ID/events
+  #GET /peers/ID/events
   PeerEventMessage:
     type: object
     required: [ "event" ]
@@ -1455,12 +1455,12 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "OPEN"
-        - "CONNECTION"
-        - "CALL"
-        - "STREAM"
-        - "CLOSE"
-        - "ERROR"
+          - "OPEN"
+          - "CONNECTION"
+          - "CALL"
+          - "STREAM"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       peer_params:
         $ref: '#/definitions/PeerParametsers'
@@ -1472,15 +1472,15 @@ definitions:
         description: エラーの内容を示します
         type: string
         enum:
-        - "BROWSER_INCOMPATIBLE"
-        - "INVALID_ID"
-        - "INVALID_KEY"
-        - "UNAVAILABLE_ID"
-        - "SSL_UNAVAILABLE"
-        - "SERVER_DISCONNECTED"
-        - "SERVER_ERROR"
-        - "SOCKET_ERROR"
-        - "SOCKET_CLOSED"
+          - "BROWSER_INCOMPATIBLE"
+          - "INVALID_ID"
+          - "INVALID_KEY"
+          - "UNAVAILABLE_ID"
+          - "SSL_UNAVAILABLE"
+          - "SERVER_DISCONNECTED"
+          - "SERVER_ERROR"
+          - "SOCKET_ERROR"
+          - "SOCKET_CLOSED"
 
   PeerParametsers:
     type: object
@@ -1517,7 +1517,7 @@ definitions:
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
 
 
-#GET /peers/ID/status
+  #GET /peers/ID/status
   PeerStatusMessage:
     type: object
     required: [ "peer_id", "disconnected" ]
@@ -1546,7 +1546,7 @@ definitions:
       rtcp_id:
         description: RTCP転送ポートを特定するためのIDです
         type: string
-        example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"        
+        example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1572,7 +1572,7 @@ definitions:
       rtcp_id:
         description: RTCP転送ポートを特定するためのIDです
         type: string
-        example: "rc-85969322-99c4-4a65-b2d4-e20d86821f13"        
+        example: "rc-85969322-99c4-4a65-b2d4-e20d86821f13"
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1581,9 +1581,9 @@ definitions:
         type: integer
         example: 48000
 
-#========================start DataConnection section============================
+  #========================start DataConnection section============================
 
-#GET /data_connections/ID/events
+  #GET /data_connections/ID/events
   DataConnectionEventMessage:
     type: object
     required: [ "event" ]
@@ -1592,15 +1592,15 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "OPEN"
-        - "CLOSE"
-        - "ERROR"
+          - "OPEN"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       error_message:
         description: エラーの内容を示します
         type: string
 
-#GET /data_connection/ID/status
+  #GET /data_connection/ID/status
   DataConnectionStatusMessage:
     type: object
     required: [ "buffersize", "label", "metadata", "open", "reliable", "serialization", "type" ]
@@ -1636,11 +1636,11 @@ definitions:
 
 
 
-#========================start MediaConnection section============================
+  #========================start MediaConnection section============================
 
 
 
-#GET /media_connections/ID/events
+  #GET /media_connections/ID/events
   MediaConnectionEventMessage:
     type: object
     required: [ "event" ]
@@ -1649,9 +1649,9 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "STREAM"
-        - "CLOSE"
-        - "ERROR"
+          - "STREAM"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       stream_options:
         description: streamの内容を示します。streamイベントの場合のみ
@@ -1726,7 +1726,7 @@ definitions:
             example: 10004
 
 
-#GET /media_connections/ID/status
+  #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
     type: object
     required: [ "open", "metadata", "remote_id" ]
@@ -1742,7 +1742,7 @@ definitions:
         type: string
         description: 接続相手のPeerのpeer_idです
 
-#========================start Data section============================
+  #========================start Data section============================
 
 
   DataSockParameters:
@@ -1781,7 +1781,7 @@ definitions:
         type: string
         example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
 
- #PUT /data/connections/ID/redirect/ID
+  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
     required: [ "port" ]
@@ -1797,7 +1797,7 @@ definitions:
         format: uint16
         example: 10001
 
-#========================start Media section============================
+  #========================start Media section============================
 
   MediaOptions:
     type: object

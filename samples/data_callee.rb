@@ -1,6 +1,6 @@
 require './util.rb'
 
-SKYWAY_API_KEY = "YOUR API KEY"
+SKYWAY_API_KEY = ENV["API_KEY"]
 PEER_ID = "data_callee"
 TARGET_ID = "data_caller"
 DATA_RECV_ADDR = "127.0.0.1"

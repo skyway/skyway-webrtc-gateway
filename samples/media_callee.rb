@@ -1,6 +1,6 @@
 require './util.rb'
 
-SKYWAY_API_KEY = "YOUR API KEY"
+SKYWAY_API_KEY = ENV["API_KEY"]
 PEER_ID = "media_callee"
 TARGET_ID = "media_caller"
 RECV_ADDR = "127.0.0.1"
@@ -11,7 +11,6 @@ AUDIO_RTCP_RECV_PORT = 20011
 
 #connect to skyway server
 peer_token = create_peer(SKYWAY_API_KEY, PEER_ID)
-sleep(1)
 #port open request for sending data
 (video_id, video_ip, video_port) = create_media(true)
 (audio_id, audio_ip, audio_port) = create_media(false)

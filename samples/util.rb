@@ -51,7 +51,7 @@ def create_peer(key, peer_id)
       "peer_id": peer_id,
   }
   res = request(:post, "/peers", JSON.generate(params))
-  json = parse_response(res)  
+  json = parse_response(res)
   json["params"]["token"]
 end
 

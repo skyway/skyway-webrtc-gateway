@@ -1,5 +1,9 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.2.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.2.1)
+
+- DELETE命令を行ってもポートが閉じないことがあるバグを修正(#19)
+
 ## [v0.2.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.2.0)
 
 - ポート番号・ログレベルの変更のための設定ファイルを定義

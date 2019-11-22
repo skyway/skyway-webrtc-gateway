@@ -114,27 +114,26 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 ### x86_64
 
-
-- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.0/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
-- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.0/gateway_windows.exe)(Windows 10, 8, 7)
+- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.1/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
+- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.1/gateway_windows.exe)(Windows 10, 8, 7)
 
 MD5
 
-gateway_linux_x64: 316c36d295d65ab75f5c4667e7d4676e
+gateway_linux_x64: afd5749f0e048308f80744c09c0c531c
 
-gateway_windows.exe: 18346abc0a8fb399dff2c395b079b778
+gateway_windows.exe: b8359b76886c8b4d777b113e2129fb06
 
 ### ARM
 
-- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.0/gateway_linux_arm)
+- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.2.1/gateway_linux_arm)
 
-想定動作環境:
-- ハードウェア: Raspberry Pi 3B, 3B+
-- ソフトウェア: Raspbian Version 9以降
+Minimum Requirements:
+- Hardware: Raspberry Pi 3B or later
+- Software: Raspbian Version 9 or later
 
 MD5
 
-gateway_linux_arm: 21aae1646d71bea2802e5943b89e9ec2
+gateway_linux_arm: 8012702da8e0f4466bff1f24a60c1a5c
 
 
 ## Updates and Release Notes

@@ -55,7 +55,7 @@ paths:
             properties:
               command_type:
                 type: string
-                example: "PEERS_CLEATE"
+                example: "PEERS_CREATE"
               params:
                 type: object
                 required: [ "errors" ]
@@ -1458,7 +1458,6 @@ definitions:
           - "OPEN"
           - "CONNECTION"
           - "CALL"
-          - "STREAM"
           - "CLOSE"
           - "ERROR"
         example: "TYPE_OF_EVENT"

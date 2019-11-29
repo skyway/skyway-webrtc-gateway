@@ -1074,7 +1074,7 @@ paths:
             properties:
               command_type:
                 type: string
-                example: "MEDIA_CONNECTION_ANSWER"
+                example: "MEDIA_CONNECTION_PLI"
               params:
                 type: object
                 required: [ "errors" ]

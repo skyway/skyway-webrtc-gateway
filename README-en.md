@@ -98,6 +98,8 @@ If you found the exciting use cases, let us know!
 
 [sequence](https://github.com/skyway/skyway-webrtc-gateway/tree/master/sequence)
 
+[Docs](https://github.com/skyway/skyway-webrtc-gateway/tree/master/docs)
+
 [FAQ](https://github.com/skyway/skyway-webrtc-gateway/blob/master/FAQ.md)
 
 [Developer community](https://support.skyway.io/hc/en-us/community/topics/360000026987-WebRTC-Gateway)

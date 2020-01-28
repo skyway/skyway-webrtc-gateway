@@ -1867,20 +1867,10 @@ definitions:
       params:
         type: object
         properties:
-          video_port:
-            description: Videoを受け取るNative Clientのポート番号を指定します
-            type: integer
-            format: uint16
-            example: 10011
           video_id:
             description: Videoを特定するためのIDです
             type: string
             example: "vi-a32e5933-828b-44e4-849d-0826ced78807"
-          audio_port:
-            description: Audioを受け取るNative Clientのポート番号を指定します
-            type: integer
-            format: uint16
-            example: 10021
           audio_id:
             description: Audioを特定するためのIDです
             type: string

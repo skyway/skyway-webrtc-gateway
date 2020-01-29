@@ -30,7 +30,7 @@ paths:
       tags:
         - 1.peers
       summary: Peerオブジェクトを生成し、SkyWayサーバと接続します
-      description: Peerオブジェクトを生成し、SkyWayサーバと接続します。SkyWayサーバと正常に接続できた場合のみ201を返します。
+      description: Peerオブジェクトを生成し、SkyWayサーバと接続します。SkyWayサーバと正常に接続できた場合のみ201を返します
       operationId: peer
       consumes:
         - application/json
@@ -144,7 +144,7 @@ paths:
       tags:
         - 1.peers
       summary: Peerオブジェクトからイベントを取得するのに利用します
-      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください
       operationId: peer_event
       consumes:
         - application/json
@@ -276,7 +276,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: bodyには空のJSON文字列("{}"")が必要です
+          description: bodyには空のJSON文字列("{}")が必要です
           schema:
             type: object
       consumes:
@@ -375,7 +375,7 @@ paths:
       tags:
         - 2.data
       summary: リモートのPeerへのDataConnectionConnection確立を開始します
-      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      description: リモートのPeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
       operationId: data_connections_create
       consumes:
         - application/json
@@ -484,7 +484,7 @@ paths:
       tags:
         - 2.data
       summary: DataConnectionの動作を変更します
-      description: DataConnectionで相手側から受信したデータの転送先指定と、DataConnectionに与えるデータの指定/変更を行います。
+      description: DataConnectionで相手側から受信したデータの転送先指定と、DataConnectionに与えるデータの指定/変更を行います
       operationId: data_connection_put
       consumes:
         - application/json
@@ -552,7 +552,7 @@ paths:
       tags:
         - 2.data
       summary: DataConnectionオブジェクトからイベントを取得するのに利用します
-      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください
       operationId: data_connection_events
       produces:
         - application/json
@@ -713,7 +713,7 @@ paths:
       tags:
         - 3.media
       summary: Mediaの解放
-      description: MediaConnectionで転送するMediaを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します。
+      description: MediaConnectionで転送するMediaを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します
       operationId: streams_delete
       produces:
         - application/json
@@ -817,8 +817,8 @@ paths:
     delete:
       tags:
         - 3.media
-      summary: RTCP待ち受けポーtpの解放
-      description: MediaConnectionで転送するRTCPを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します。
+      summary: RTCP待ち受けポートの解放
+      description: MediaConnectionで転送するRTCPを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します
       operationId: media_rtcp_delete
       produces:
         - application/json
@@ -870,7 +870,7 @@ paths:
       tags:
         - 3.media
       summary: リモートのPeerへのMediaConnection確立を開始します
-      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      description: リモートのPeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
       operationId: media_connection_create
       consumes:
         - application/json
@@ -1106,7 +1106,7 @@ paths:
       tags:
         - 3.media
       summary: MediaConnectionオブジェクトからイベントを取得するのに利用します
-      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください。
+      description: Long Pollでイベントを監視するのに利用します。連続でイベントが発火する場合があるため常に監視するようにしてください
       operationId: media_connection_event
       produces:
         - application/json
@@ -1218,24 +1218,24 @@ definitions:
     required: [ "key", "domain" ]
     properties:
       key:
-        description: クラウド上のPeerServerを利用するためのAPIキーです。
+        description: クラウド上のPeerServerを利用するためのAPIキーです
         type: string
         format: string
         example: "KEY_FOO"
       domain:
-        description: SkyWayでの開発者登録時に指定したWebサーバのドメイン文字列を指定します。
+        description: SkyWayでの開発者登録時に指定したWebサーバのドメイン文字列を指定します
         type: string
         format: string
         example: "example.com"
       peer_id:
-        description: 他のピアがこのピアへ接続するときに使われるIDです。もしIDが指定されない場合、ブローカサーバがIDを生成します。
+        description: 他のピアがこのピアへ接続するときに使われるIDです。もしIDが指定されない場合、ブローカサーバがIDを生成します
         type: string
         format: string
         example: "ID_FOO"
       turn:
         type: boolean
         example: true
-        description: SkyWayのTURNサーバを利用する場合はtrueにします。デフォルトはtrueです。
+        description: SkyWayのTURNサーバを利用する場合はtrueにします。デフォルトはtrueです
 
   PeerResponse:
     type: object
@@ -1491,7 +1491,7 @@ definitions:
         type: string
         example: "hoge"
       token:
-        description: Peerを利用するために必要なtokenです。
+        description: Peerを利用するために必要なtokenです
         type: string
         example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
 
@@ -1547,7 +1547,7 @@ definitions:
         type: string
         example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       payload_type:
-        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定します
         type: integer
         example: 100
       sampling_rate:
@@ -1573,7 +1573,7 @@ definitions:
         type: string
         example: "rc-85969322-99c4-4a65-b2d4-e20d86821f13"
       payload_type:
-        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定します
         type: integer
         example: 111
       sampling_rate:
@@ -1609,22 +1609,22 @@ definitions:
         type: string
         example: "ID_BAR"
       buffersize:
-        description: ブラウザのバッファが一杯になった場合に、キューされるメッセージのサイズです。
+        description: ブラウザのバッファが一杯になった場合に、キューされるメッセージのサイズです
         type: integer
       label:
-        description: コネクションが開始されたときにPeerJSからアサインされる、または指定されるオプションのラベルです。
+        description: コネクションが開始されたときにPeerJSからアサインされる、または指定されるオプションのラベルです
         type: string
       metadata:
-        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです。
+        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです
         type: object
       open:
-        description: コネクションがopenであり、読み込み/書き込みの準備ができている場合にtrueになります。
+        description: コネクションがopenであり、読み込み/書き込みの準備ができている場合にtrueになります
         type: boolean
       reliable:
-        description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます。
+        description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます
         type: boolean
       serialization:
-        description: コネクションを通じて送信されるデータのserializeフォーマットです。BINARY (デフォルト値)、 BINARY_UTF8、 JSON、 または NONE となります。
+        description: コネクションを通じて送信されるデータのserializeフォーマットです。BINARY (デフォルト値)、 BINARY_UTF8、 JSON、 または NONE となります
         type: string
         example: "BINARY_UTF8"
       type:
@@ -1654,13 +1654,13 @@ definitions:
           - "ERROR"
         example: "TYPE_OF_EVENT"
       stream_options:
-        description: streamの内容を示します。streamイベントの場合のみ
+        description: streamの内容を示します。streamイベントのときのみ含まれます
         type: object
         required: [ "is_video", "media_connection_id", "stream_id" ]
         properties:
           is_video:
             type: boolean
-            description: videoの場合にtrue, audioの場合false
+            description: videoの場合にtrue, audioの場合にfalseを指定します
           stream_params:
             $ref: '#/definitions/MediaParameters'
       close_options:
@@ -1736,7 +1736,7 @@ definitions:
         type: boolean
         example: true
       metadata:
-        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです。
+        description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです
         type: object
       remote_id:
         type: string

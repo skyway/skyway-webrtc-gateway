@@ -144,7 +144,7 @@ paths:
       tags:
         - 1.peers
       summary: Peer認証のクレデンシャルを更新します
-      description: Peer認証のクレデンシャルを更新するためのリクエストをシグナリングサーバに送信します
+      description: Peer認証のクレデンシャルを更新するためのリクエストをシグナリングサーバに送信します。このAPIは認証機能が有効の場合のみ使えます
       operationId: peer_credential_update
       consumes:
         - application/json
@@ -163,7 +163,7 @@ paths:
           required: true
         - in: body
           name: credential
-          description: Peerを認証するためのクレデンシャルです。認証機能が有効の場合のみ使えます
+          description: Peerを認証するためのクレデンシャルです
           required: true
           schema:
             $ref: '#/definitions/PeerCredential'
@@ -176,7 +176,10 @@ paths:
                 type: string
                 example: "PEERS_CREDENTIAL_UPDATE"
               params:
-                $ref: '#/definitions/PeerCredential'
+                type: object
+                properties:
+                  credential:
+                    $ref: '#/definitions/PeerCredential'
 
         '400':
           description: Invalid input
@@ -1557,7 +1560,10 @@ definitions:
       data_params:
         $ref: '#/definitions/DataParametsers'
       remainingSec:
-        $ref: '#/definitions/RemainingSec'
+        description: expiresinイベントのときのみ含まれます。クレデンシャルが失効するまでの時間(秒)です
+        type: integer
+        example: 300
+
       error_message:
         description: エラーの内容を示します
         type: string
@@ -1605,11 +1611,6 @@ definitions:
         description: 相手側からのConnectに応答するのに必要なIDです
         type: string
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
-
-  RemainingSec:
-    description: expiresinイベントのときのみ含まれます。クレデンシャルが失効するまでの時間(秒)です
-    type: integer
-    example: 300
 
   #GET /peers/ID/status
   PeerStatusMessage:

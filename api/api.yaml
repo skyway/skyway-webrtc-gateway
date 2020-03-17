@@ -1316,7 +1316,7 @@ definitions:
         format: int64
         example: 1582789414
       ttl:
-        description: Time to live(ttl)。タイムスタンプ + ttl の時間でクレデンシャルが失効します。600から90000までの秒数を指定できます
+        description: TTL(600~90000の秒数で指定)。timestamp + TTL の時刻にcredentialが失効します。
         type: integer
         example: 3600
       authToken:

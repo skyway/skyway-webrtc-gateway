@@ -144,7 +144,7 @@ paths:
       tags:
         - 1.peers
       summary: Peer認証のクレデンシャルを更新します
-      description: Peer認証のクレデンシャルを更新するためのリクエストをシグナリングサーバに送信します。このAPIは認証機能が有効の場合のみ使えます
+      description: シグナリングサーバ接続し、Peer認証のクレデンシャルを更新します
       operationId: peer_credential_update
       consumes:
         - application/json
@@ -1321,6 +1321,8 @@ definitions:
       ttl:
         description: クレデンシャルの生存期間です。timestampからttl秒経過したとき、クレデンシャルが失効します。
         type: integer
+        minimum: 300
+        maximum: 90000
         example: 3600
       authToken:
         description: HMACを利用して生成する認証用トークンです

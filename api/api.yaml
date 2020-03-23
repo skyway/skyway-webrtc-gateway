@@ -144,7 +144,7 @@ paths:
       tags:
         - 1.peers
       summary: Peer認証のクレデンシャルを更新します
-      description: SkyWayサーバに接続し、Peer認証のクレデンシャルを更新します。Peer認証機能が有効でなければ、クレデンシャルを更新する要求は無視されます。このとき、エラーイベントは発火しません
+      description: Peer認証のクレデンシャルを更新します。Peer認証機能が有効でなければ、クレデンシャルを更新する要求は無視されます。このとき、エラーイベントは発火しません
       operationId: peer_credential_update
       consumes:
         - application/json

@@ -1321,7 +1321,7 @@ definitions:
       ttl:
         description: クレデンシャルの生存期間です。timestampからttl秒経過したとき、クレデンシャルが失効します。
         type: integer
-        minimum: 300
+        minimum: 600
         maximum: 90000
         example: 3600
       authToken:

@@ -39,7 +39,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: SkyWayサーバへアクセスするための情報を指定します。Peerの認証機能が有効の場合のみクレデンシャルが必要です
+          description: SkyWayサーバへアクセスするための情報を指定します。Peerの認証機能が有効になっている場合は、クレデンシャルが必要です
           required: true
           schema:
             $ref: '#/definitions/PeerOptions'

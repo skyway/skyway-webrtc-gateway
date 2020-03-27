@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: 'SkyWay WebRTC Gatewayを操作するためのREST API仕様書'
-  version: 1.0.0
+  version: 0.3.0
   title: SkyWay WebRTC Gateway REST API
   termsOfService: 'http://nttcom.github.io/skyway/'
   contact:

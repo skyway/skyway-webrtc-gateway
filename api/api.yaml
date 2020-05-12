@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: 'SkyWay WebRTC Gatewayを操作するためのREST API仕様書'
-  version: 0.2.1
+  version: 0.3.0
   title: SkyWay WebRTC Gateway REST API
   termsOfService: 'http://nttcom.github.io/skyway/'
   contact:
@@ -39,7 +39,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: SkyWayサーバへアクセスするための情報を指定します
+          description: SkyWayサーバへアクセスするための情報を指定します。Peerの認証機能が有効になっている場合は、クレデンシャルが必要です
           required: true
           schema:
             $ref: '#/definitions/PeerOptions'
@@ -138,6 +138,76 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
+
+  /peers/{peer_id}/credential:
+    put:
+      tags:
+        - 1.peers
+      summary: Peer認証のクレデンシャルを更新します
+      description: Peer認証のクレデンシャルを更新します。Peer認証機能が有効でなければ、クレデンシャルを更新する要求は無視されます。このとき、エラーイベントは発火しません
+      operationId: peer_credential_update
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: peer_id
+          type: string
+          in: path
+          description: 他のピアがこのピアへ接続するときに使われるIDです。Peerオブジェクトの特定にも利用します
+          required: true
+        - name: token
+          type: string
+          in: query
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+        - in: body
+          name: credential
+          description: Peerを認証するためのクレデンシャルです
+          required: true
+          schema:
+            $ref: '#/definitions/PeerCredential'
+      responses:
+        '200':
+          description: Ok
+          schema:
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_CREDENTIAL_UPDATE"
+              params:
+                type: object
+                properties:
+                  credential:
+                    $ref: '#/definitions/PeerCredential'
+
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "PEERS_CREDENTIAL_UPDATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: credential
+                        message:
+                          type: string
+                          example: "timestamp is non-integer value"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
 
   /peers/{peer_id}/events:
     get:
@@ -1236,6 +1306,29 @@ definitions:
         type: boolean
         example: true
         description: SkyWayのTURNサーバを利用する場合はtrueにします。デフォルトはtrueです
+      credential:
+        $ref: '#/definitions/PeerCredential'
+
+  PeerCredential:
+    type: object
+    required: [ "timestamp", "ttl", "authToken"]
+    properties:
+      timestamp:
+        description: 現在のUNIXタイムスタンプです
+        type: integer
+        format: int64
+        example: 1582789414
+      ttl:
+        description: クレデンシャルの生存期間です。timestampからttl秒経過したとき、クレデンシャルが失効します。
+        type: integer
+        minimum: 600
+        maximum: 90000
+        example: 3600
+      authToken:
+        description: HMACを利用して生成する認証用トークンです
+        type: string
+        format: byte
+        example: "jfdcSAe2kaj/i7/IO5MEvJA7JecVimAOb48WgLhJux4="
 
   PeerResponse:
     type: object
@@ -1459,6 +1552,7 @@ definitions:
           - "CONNECTION"
           - "CALL"
           - "CLOSE"
+          - "EXPIRESIN"
           - "ERROR"
         example: "TYPE_OF_EVENT"
       params:
@@ -1467,6 +1561,11 @@ definitions:
         $ref: '#/definitions/CallParametsers'
       data_params:
         $ref: '#/definitions/DataParametsers'
+      remainingSec:
+        description: expiresinイベントのときのみ含まれます。クレデンシャルが失効するまでの時間(秒)です
+        type: integer
+        example: 300
+
       error_message:
         description: エラーの内容を示します
         type: string
@@ -1514,7 +1613,6 @@ definitions:
         description: 相手側からのConnectに応答するのに必要なIDです
         type: string
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
-
 
   #GET /peers/ID/status
   PeerStatusMessage:

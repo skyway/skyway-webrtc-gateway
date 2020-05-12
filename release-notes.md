@@ -4,7 +4,7 @@
 
 - バグの修正
   - 通話を繰り返すことによりメモリ使用量が増加してしまう問題を修正
-  - `+` などの記号を使用したPeerIdを指定してPeer生成を行うと、指定したPeerIdでPeerが生成されない問題を修正
+  - `Peer`インスタンスを生成するとき、`+`などの記号を含む`Peer ID`を引数に指定した場合、指定した`Peer ID`と異なる`Peer ID`が割り当てられる問題を修正
 - [SkyWay Peer Authentication](https://github.com/skyway/skyway-peer-authentication-samples) に対応
 - [API Referenceの更新](http://35.200.46.204/)
 

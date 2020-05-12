@@ -1,5 +1,13 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.3.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.0)
+
+- バグの修正
+  - 通話を繰り返すことによりメモリ使用量が増加してしまう問題を修正
+  - 指定したPeerIdでPeerが生成されない問題を修正
+- [SkyWay Peer Authentication](https://github.com/skyway/skyway-peer-authentication-samples) に対応
+- [API Referenceの更新](http://35.200.46.204/)
+
 ## [v0.2.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.2.1)
 
 - DELETE命令を行ってもポートが閉じないことがあるバグを修正(#19)

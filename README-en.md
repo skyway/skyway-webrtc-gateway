@@ -108,18 +108,18 @@ If you found the exciting use cases, let us know!
 
 ### x86_64
 
-- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.0/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
-- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.0/gateway_windows.exe)(Windows 10, 8, 7)
+- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
+- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_windows.exe)(Windows 10, 8, 7)
 
 MD5
 
-gateway_linux_x64: 1fff70a9edd867777708e69f062f0c9e
+gateway_linux_x64: 445e1c3cfffc2ec616493dfac633c69c
 
-gateway_windows.exe: b43d649f0cfc81392b28411ec0efc81d
+gateway_windows.exe: cb664dfeaa8963b7044b8e63ba08e964
 
 ### ARM
 
-- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.0/gateway_linux_arm)
+- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_linux_arm)
 
 Minimum Requirements:
 - Hardware: Raspberry Pi 3B or later
@@ -127,7 +127,7 @@ Minimum Requirements:
 
 MD5
 
-gateway_linux_arm: b4fbc111e222aa6f51079cbccc5012b6
+gateway_linux_arm: da6627f93822e75dca30f929cffa8237
 
 ## Updates and Release Notes
 

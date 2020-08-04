@@ -1,5 +1,9 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.3.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.1)
+
+- SCTPに関する脆弱性への対応
+
 ## [v0.3.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.0)
 
 - バグの修正

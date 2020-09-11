@@ -114,29 +114,16 @@ WebRTC Engineを自由に操作できることで、その用途は無限に広�
 
 ## Download
 
-### x86_64
+[Download](https://github.com/skyway/skyway-webrtc-gateway/releases)
 
-- [Linux](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_linux_x64)(Ubuntu18.04, 16.04, etc.)
-- [Windows](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_windows.exe)(Windows 10, 8, 7)
+- Windows(x64): Windows 10, 8, 7
+- Linux(x64): Ubuntu18.04, 16.04, etc.
+- Linux(ARM)
 
-MD5
+## Raspberry Pi (Linux ARM) Minimum Requirements
 
-gateway_linux_x64: 445e1c3cfffc2ec616493dfac633c69c
-
-gateway_windows.exe: cb664dfeaa8963b7044b8e63ba08e964
-
-### ARM
-
-- [ARM](https://github.com/skyway/skyway-webrtc-gateway/releases/download/0.3.1/gateway_linux_arm)
-
-Minimum Requirements:
 - Hardware: Raspberry Pi 3B or later
 - Software: Raspbian Version 9 or later
-
-MD5
-
-gateway_linux_arm: da6627f93822e75dca30f929cffa8237
-
 
 ## Updates and Release Notes
 

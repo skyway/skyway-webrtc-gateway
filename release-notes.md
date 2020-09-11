@@ -1,5 +1,9 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.3.2](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.2)
+
+- MediaConnectionを破棄した後に、再度peer.callを実行するとクラッシュするバグを解消しました。
+
 ## [v0.3.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.1)
 
 - SCTPに関する脆弱性への対応

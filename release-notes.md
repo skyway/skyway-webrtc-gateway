@@ -2,7 +2,7 @@
 
 ## [v0.3.2](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.2)
 
-- MediaConnectionを破棄した後に、再度peer.callを実行するとクラッシュするバグを解消しました。
+- `/media/connections/{media_connection_id}/answer` で解放済みのmediaを設定するとクラッシュする不具合を修正しました。
 
 ## [v0.3.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.1)
 

@@ -1448,6 +1448,9 @@ definitions:
         $ref: '#/definitions/PeerVideoParameters'
       audio_params:
         $ref: '#/definitions/PeerAudioParameters'
+      metadata:
+        type: object
+        description: コネクションに関連付けされる任意のメタデータで、接続先の Peer に渡されます。
 
   PeerCallResponse:
     type: object

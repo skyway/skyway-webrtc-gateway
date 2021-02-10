@@ -297,13 +297,10 @@ $ docker restart gw
 
 また必要に応じて、Gatewayサーバのログ表示してデバッグを行うことができます。
 
-[こちら](https://github.com/skyway/skyway-webrtc-gateway/blob/5355ae0e7011413574efd12ece0886965ea0181b/Dockerfile#L6)をinfoにしてimageを再ビルドします。
+[こちら](https://github.com/skyway/skyway-webrtc-gateway/blob/5355ae0e7011413574efd12ece0886965ea0181b/Dockerfile#L6)をdebugにしてimageを再ビルドします。
 
 以下のコマンドで Gatewayサーバのログをwatchできます。
 
 ```
-$ docker logs gw -f 
+$ docker logs gw -f
 ```
-
-
-

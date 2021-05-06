@@ -1559,11 +1559,11 @@ definitions:
           - "ERROR"
         example: "TYPE_OF_EVENT"
       params:
-        $ref: '#/definitions/PeerParametsers'
+        $ref: '#/definitions/PeerParameters'
       call_params:
-        $ref: '#/definitions/CallParametsers'
+        $ref: '#/definitions/CallParameters'
       data_params:
-        $ref: '#/definitions/DataParametsers'
+        $ref: '#/definitions/DataParameters'
       remainingSec:
         description: expiresinイベントのときのみ含まれます。クレデンシャルが失効するまでの時間(秒)です
         type: integer
@@ -1583,7 +1583,7 @@ definitions:
           - "SOCKET_ERROR"
           - "SOCKET_CLOSED"
 
-  PeerParametsers:
+  PeerParameters:
     type: object
     description: openイベントのときのみ含まれます
     required: [ "peer_id" ]
@@ -1597,7 +1597,7 @@ definitions:
         type: string
         example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
 
-  CallParametsers:
+  CallParameters:
     description: call及びstreamイベントのときのみ含まれます
     type: object
     required: [ "media_connection_id" ]
@@ -1607,7 +1607,7 @@ definitions:
         type: string
         example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
 
-  DataParametsers:
+  DataParameters:
     description: OnDataConnectionイベントのときのみ含まれます
     type: object
     required: [ "data_connection_id" ]

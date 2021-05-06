@@ -1615,7 +1615,7 @@ definitions:
       data_connection_id:
         description: 相手側からのConnectに応答するのに必要なIDです
         type: string
-        example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
+        example: "dc-102127d9-30de-413b-93f7-41a33e39d82b"
 
   #GET /peers/ID/status
   PeerStatusMessage:

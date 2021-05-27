@@ -1,5 +1,13 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.4.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.0)
+
+- `PeerID` を指定せずに生成した `Peer` が、シグナリングサーバと自動再接続する際に、 `PeerID` が変わってしまう不具合を修正しました。
+- Peer認証に使用される `Credential` の更新後に `Peer` がシグナリングサーバと自動再接続する際、再接続に失敗する不具合を修正しました。
+- `Peer` がシグナリングサーバと自動再接続する際に、 `Peer` のopenイベントが再発火する不具合を修正しました。
+- シグナリングサーバへの接続プロセスを修正し、 `Peer` からディスパッチャーサーバへのリクエストが失敗した場合に再接続するようにしました。
+- セキュリティの強化を実施しました。
+
 ## [v0.3.2](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.3.2)
 
 - `/media/connections/{media_connection_id}/answer` で解放済みのmediaを設定するとクラッシュする不具合を修正しました。

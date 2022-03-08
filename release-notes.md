@@ -1,5 +1,9 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.4.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.1)
+
+- Call への応答 API で `constranints` の `video` が `false` の場合に PLI パケット送信 API を実行した際、405 エラーが返却される不具合を修正しました。
+
 ## [v0.4.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.0)
 
 - `PeerID` を指定せずに生成した `Peer` が、シグナリングサーバと自動再接続する際に、 `PeerID` が変わってしまう不具合を修正しました。

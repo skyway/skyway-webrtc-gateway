@@ -2,7 +2,7 @@
 
 ## [v0.4.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.1)
 
-- Call への応答 API (`/media/connections/#{media_connection_id}/answer`) のリクエストボディ内の `constranints` オブジェクトの `video` プロパティを `false` にした場合に、PLI パケット送信 API (`/media/connections/#{media_connection_id}/pli`) を実行すると 405 エラーが返却される不具合を修正しました。
+- Call への応答 API で `constranints` の `video` が `false` の場合に PLI パケット送信 API を実行した際、405 エラーが返却される不具合を修正しました。
 
 ## [v0.4.0](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.0)
 

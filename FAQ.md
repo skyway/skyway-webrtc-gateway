@@ -25,3 +25,6 @@ payload typeの指定が間違っているとredirectされません。これは
 
 x264encを利用した場合、H.264のChrome側で無視されるようです。OpenH264でエンコードすることにより表示されることを確認しています。
 https://github.com/skyway/skyway-webrtc-gateway/issues/14
+
+OpenH264でエンコードした映像をGStreamerで送信するサンプルコードを用意しています。
+https://github.com/skyway/skyway-webrtc-gateway/blob/master/gst-sample-script/video_openh264_send.sh

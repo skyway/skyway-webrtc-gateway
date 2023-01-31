@@ -1,5 +1,9 @@
 # skyway-webrtc-gateway
 
+**これは旧SkyWayのリポジトリです。[新しいSkyWay](<https://skyway.ntt.com>)への移行をご検討ください。**
+
+---
+
 [English version of this document](./README-en.md)
 
 SkyWay WebRTC Gatewayは、WebRTCの可能性を広げる実験的な取り組みです。

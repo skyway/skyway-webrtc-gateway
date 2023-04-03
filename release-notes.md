@@ -1,5 +1,9 @@
 # SkyWay WebRTC Gateway release notes
 
+## [v0.4.2](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.2)
+
+- コンフィグ取得処理にmulti-thread safeではない処理が含まれていたため、複数同時にcreate peerする場合にクラッシュする不具合を修正しました。
+
 ## [v0.4.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.4.1)
 
 - Call への応答 API で `constranints` の `video` が `false` の場合に PLI パケット送信 API を実行した際、405 エラーが返却される不具合を修正しました。

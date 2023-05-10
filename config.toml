@@ -1,5 +1,0 @@
-[general]
-# default: 8000
-api_port = 8000
-# error, warn, debug
-log_level = "error"

@@ -96,7 +96,7 @@ If you found the exciting use cases, let us know!
 
 ## How to Use
 
-[API Reference](http://35.200.46.204)
+[API Reference](https://skyway.github.io/skyway-webrtc-gateway)
 
 [samples](https://github.com/skyway/skyway-webrtc-gateway/tree/master/samples)
 

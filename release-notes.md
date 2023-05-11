@@ -30,7 +30,7 @@
   - 通話を繰り返すことによりメモリ使用量が増加してしまう問題を修正
   - `Peer`インスタンスを生成するとき、`+`などの記号を含む`Peer ID`を引数に指定した場合、指定した`Peer ID`と異なる`Peer ID`が割り当てられる問題を修正
 - [SkyWay Peer Authentication](https://github.com/skyway/skyway-peer-authentication-samples) に対応
-- [API Referenceの更新](http://35.200.46.204/)
+- [API Referenceの更新](https://skyway.github.io/skyway-webrtc-gateway/)
 
 ## [v0.2.1](https://github.com/skyway/skyway-webrtc-gateway/releases/tag/0.2.1)
 
